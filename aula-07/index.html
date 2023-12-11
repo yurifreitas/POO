@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo de Palavras</title>
+</head>
+<body>
+    <h1>Jogo de Palavras</h1>
+    <p>Adivinhe a palavra:</p>
+    <p id="word"></p>
+    <input type="text" id="guess" placeholder="Digite sua resposta">
+    <button onclick="checkGuess()">Verificar</button>
+    <p id="message"></p>
+
+    <script>
+        // Lista de palavras
+        const palavras = ["banana", "abacaxi", "morango", "laranja", "uva"];
+
+        // Seleciona uma palavra aleatória
+        const palavraAleatoria = palavras[Math.floor(Math.random() * palavras.length)];
+
+        // Embaralha a palavra
+        const palavraEmbaralhada = embaralharPalavra(palavraAleatoria);
+
+        // Exibe a palavra embaralhada
+        document.getElementById("word").textContent = palavraEmbaralhada;
+
+        // Função para embaralhar uma palavra
+        function embaralharPalavra(palavra) {
+            const arrayDeLetras = palavra.split('');
+            for (let i = arrayDeLetras.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arrayDeLetras[i], arrayDeLetras[j]] = [arrayDeLetras[j], arrayDeLetras[i]];
+            }
+            return arrayDeLetras.join('');
+        }
+
+        // Função para verificar a resposta
+        function checkGuess() {
+            const resposta = document.getElementById("guess").value.toLowerCase();
+            if (resposta === palavraAleatoria) {
+                document.getElementById("message").textContent = "Parabéns! Você acertou!";
+            } else {
+                document.getElementById("message").textContent = "Tente novamente.";
+            }
+        }
+    </script>
+</body>
+</html>
