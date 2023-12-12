@@ -4,47 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jogo de Palavras</title>
+    <link rel="stylesheet" href="styles.css"> Arquivo de estilos CSS externo
 </head>
 <body>
     <h1>Jogo de Palavras</h1>
     <p>Adivinhe a palavra:</p>
     <p id="word"></p>
     <input type="text" id="guess" placeholder="Digite sua resposta">
-    <button onclick="checkGuess()">Verificar</button>
+    <button id="checkButton">Verificar</button>
     <p id="message"></p>
 
     <script>
-        // Lista de palavras
-        const palavras = ["banana", "abacaxi", "morango", "laranja", "uva"];
+        class JogoDePalavras {
+            static palavras = ["banana", "abacaxi", "morango", "laranja", "uva"];
 
-        // Seleciona uma palavra aleatória
-        const palavraAleatoria = palavras[Math.floor(Math.random() * palavras.length)];
-
-        // Embaralha a palavra
-        const palavraEmbaralhada = embaralharPalavra(palavraAleatoria);
-
-        // Exibe a palavra embaralhada
-        document.getElementById("word").textContent = palavraEmbaralhada;
-
-        // Função para embaralhar uma palavra
-        function embaralharPalavra(palavra) {
-            const arrayDeLetras = palavra.split('');
-            for (let i = arrayDeLetras.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [arrayDeLetras[i], arrayDeLetras[j]] = [arrayDeLetras[j], arrayDeLetras[i]];
+            static selecionarPalavraAleatoria() {
+                return this.palavras[Math.floor(Math.random() * this.palavras.length)];
             }
-            return arrayDeLetras.join('');
-        }
 
-        // Função para verificar a resposta
-        function checkGuess() {
-            const resposta = document.getElementById("guess").value.toLowerCase();
-            if (resposta === palavraAleatoria) {
-                document.getElementById("message").textContent = "Parabéns! Você acertou!";
-            } else {
-                document.getElementById("message").textContent = "Tente novamente.";
+            constructor() {
+                this.palavraAleatoria = JogoDePalavras.selecionarPalavraAleatoria();
+                this.wordElement = document.getElementById("word");
+                this.guessElement = document.getElementById("guess");
+                this.checkButton = document.getElementById("checkButton");
+                this.messageElement = document.getElementById("message");
+                this.inicializar();
+            }
+
+            inicializar() {
+                this.wordElement.textContent = this.palavraAleatoria;
+                this.checkButton.addEventListener("click", () => this.checkGuess());
+            }
+
+            checkGuess() {
+                const resposta = this.guessElement.value.toLowerCase();
+                if (resposta === this.palavraAleatoria) {
+                    this.messageElement.textContent = "Parabéns! Você acertou!";
+                } else {
+                    this.messageElement.textContent = "Tente novamente.";
+                }
             }
         }
+        const jogo = new JogoDePalavras();
     </script>
 </body>
 </html>
